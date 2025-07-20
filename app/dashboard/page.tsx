@@ -1,15 +1,43 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect, useState } from "react"
+import {
+  Card, CardContent, CardDescription, CardHeader, CardTitle
+} from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { BarChart3, TrendingUp, Users, Package, ShoppingCart, DollarSign, AlertTriangle, Eye, Plus } from "lucide-react"
+import {
+  BarChart3, TrendingUp, Users, Package, ShoppingCart, DollarSign,
+  AlertTriangle, Eye, Plus
+} from "lucide-react"
 
 export default function DashboardPage() {
+  const [vendorInfo, setVendorInfo] = useState<{ shop_name: string; vendor_id: string } | null>(null)
+
+  useEffect(() => {
+    const fetchVendorInfo = async () => {
+      const vendor_id = localStorage.getItem("vendor_id")
+      if (!vendor_id) return
+
+      const res = await fetch("/api/vendor/info", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vendor_id }),
+      })
+
+      const data = await res.json()
+      if (data.success && data.vendor) {
+        setVendorInfo(data.vendor)
+      }
+    }
+
+    fetchVendorInfo()
+  }, [])
+
   const stats = [
     {
       title: "Total Revenue",
-      value: "$45,231.89",
+      value: "₹45,231.89",
       change: "+20.1%",
       trend: "up",
       icon: DollarSign,
@@ -46,11 +74,11 @@ export default function DashboardPage() {
   ]
 
   const recentOrders = [
-    { id: "#3210", customer: "John Doe", amount: "$250.00", status: "Completed", date: "2024-01-15" },
-    { id: "#3209", customer: "Jane Smith", amount: "$150.00", status: "Processing", date: "2024-01-15" },
-    { id: "#3208", customer: "Bob Johnson", amount: "$350.00", status: "Shipped", date: "2024-01-14" },
-    { id: "#3207", customer: "Alice Brown", amount: "$120.00", status: "Pending", date: "2024-01-14" },
-    { id: "#3206", customer: "Charlie Wilson", amount: "$280.00", status: "Completed", date: "2024-01-13" },
+    { id: "#3210", customer: "John Doe", amount: "₹250.00", status: "Completed", date: "2024-01-15" },
+    { id: "#3209", customer: "Jane Smith", amount: "₹150.00", status: "Processing", date: "2024-01-15" },
+    { id: "#3208", customer: "Bob Johnson", amount: "₹350.00", status: "Shipped", date: "2024-01-14" },
+    { id: "#3207", customer: "Alice Brown", amount: "₹120.00", status: "Pending", date: "2024-01-14" },
+    { id: "#3206", customer: "Charlie Wilson", amount: "₹280.00", status: "Completed", date: "2024-01-13" },
   ]
 
   const lowStockProducts = [
@@ -62,29 +90,27 @@ export default function DashboardPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Completed":
-        return "bg-green-100 text-green-800"
-      case "Processing":
-        return "bg-yellow-100 text-yellow-800"
-      case "Shipped":
-        return "bg-blue-100 text-blue-800"
-      case "Pending":
-        return "bg-gray-100 text-gray-800"
-      default:
-        return "bg-gray-100 text-gray-800"
+      case "Completed": return "bg-green-100 text-green-800"
+      case "Processing": return "bg-yellow-100 text-yellow-800"
+      case "Shipped": return "bg-blue-100 text-blue-800"
+      case "Pending": return "bg-gray-100 text-gray-800"
+      default: return "bg-gray-100 text-gray-800"
     }
   }
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-        <div className="flex items-center space-x-2">
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Product
-          </Button>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            {vendorInfo?.shop_name || "Your Shop"}
+          </h2>
+          <p className="text-sm text-gray-600">Vendor ID: {vendorInfo?.vendor_id}</p>
         </div>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Product
+        </Button>
       </div>
 
       {/* Stats Cards */}
@@ -142,7 +168,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="text-right space-y-1">
                     <p className="text-sm font-medium">{order.amount}</p>
-                    <Badge className={`text-xs ${getStatusColor(order.status)}`}>{order.status}</Badge>
+                    <Badge className={`text-xs ₹{getStatusColor(order.status)}`}>{order.status}</Badge>
                   </div>
                 </div>
               ))}

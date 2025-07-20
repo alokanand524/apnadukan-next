@@ -26,7 +26,7 @@ export default function Component() {
       <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50">
         <Link href="/" className="flex items-center justify-center">
           <Store className="h-8 w-8 text-blue-600" />
-          <span className="ml-2 text-xl font-bold text-gray-900">VendorHub</span>
+          <span className="ml-2 text-xl font-bold text-gray-900">DukaanDar</span>
         </Link>
         <nav className="ml-auto hidden md:flex gap-6">
           <Link href="#features" className="text-sm font-medium hover:text-blue-600 transition-colors">
@@ -100,10 +100,10 @@ export default function Component() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="/vendor-img.png?height=400&width=600"
                   width="600"
                   height="400"
-                  alt="VendorHub Dashboard Preview"
+                  alt="DukaanDar Dashboard Preview"
                   className="mx-auto aspect-video overflow-hidden rounded-xl object-cover shadow-2xl"
                 />
               </div>
@@ -246,12 +246,12 @@ export default function Component() {
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
-                  <Badge variant="secondary">Why Choose VendorHub</Badge>
+                  <Badge variant="secondary">Why Choose DukaanDar</Badge>
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                     Built for Modern Vendors
                   </h2>
                   <p className="max-w-[600px] text-gray-600 md:text-xl">
-                    Join thousands of successful vendors who trust VendorHub to power their online business.
+                    Join thousands of successful vendors who trust DukaanDar to power their online business.
                   </p>
                 </div>
                 <div className="grid gap-4">
@@ -280,10 +280,10 @@ export default function Component() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="/modern-vendors.webp?height=400&width=600"
                   width="600"
                   height="400"
-                  alt="VendorHub Analytics"
+                  alt="DukaanDar Analytics"
                   className="mx-auto aspect-video overflow-hidden rounded-xl object-cover shadow-lg"
                 />
               </div>
@@ -309,7 +309,7 @@ export default function Component() {
                     ))}
                   </div>
                   <CardDescription>
-                    "VendorHub transformed our business. The inventory management alone saved us 10 hours per week!"
+                    "DukaanDar transformed our business. The inventory management alone saved us 10 hours per week!"
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -395,11 +395,11 @@ export default function Component() {
                   />
                   <Link href="/trial">
                     <Button type="button" variant="secondary">
-                      Start Free Trial
+                      Start Your Online Store
                     </Button>
                   </Link>
                 </form>
-                <p className="text-xs text-blue-100">14-day free trial • No credit card required • Cancel anytime</p>
+                {/* <p className="text-xs text-blue-100">14-day free trial • No credit card required • Cancel anytime</p> */}
               </div>
               <div className="flex items-center gap-8 text-sm">
                 <div className="flex items-center gap-2">
@@ -424,9 +424,9 @@ export default function Component() {
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-gray-50">
         <div className="flex items-center gap-2">
           <Store className="h-6 w-6 text-blue-600" />
-          <span className="font-bold text-gray-900">VendorHub</span>
+          <span className="font-bold text-gray-900">DukaanDar</span>
         </div>
-        <p className="text-xs text-gray-600 sm:ml-4">© 2024 VendorHub. All rights reserved.</p>
+        <p className="text-xs text-gray-600 sm:ml-4">© 2024 DukaanDar. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4 text-gray-600">
             Terms of Service

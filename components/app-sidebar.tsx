@@ -118,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className="flex items-center gap-2 px-4 py-2">
           <Store className="h-8 w-8 text-blue-600" />
           <div>
-            <h2 className="text-lg font-semibold">VendorHub</h2>
+            <h2 className="text-lg font-semibold">DukaanDar</h2>
             <p className="text-sm text-muted-foreground">My Store Dashboard</p>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function TrialPage() {
       <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50">
         <Link href="/" className="flex items-center justify-center">
           <Store className="h-8 w-8 text-blue-600" />
-          <span className="ml-2 text-xl font-bold text-gray-900">VendorHub</span>
+          <span className="ml-2 text-xl font-bold text-gray-900">DukaanDar</span>
         </Link>
         <nav className="ml-auto flex items-center gap-4">
           <Link href="/login">
@@ -44,7 +44,7 @@ export default function TrialPage() {
                   Today
                 </h1>
                 <p className="max-w-[800px] text-gray-600 md:text-xl lg:text-2xl">
-                  Join over 10,000+ successful vendors who trust VendorHub to power their online business. No credit
+                  Join over 10,000+ successful vendors who trust DukaanDar to power their online business. No credit
                   card required, cancel anytime.
                 </p>
               </div>
@@ -222,7 +222,7 @@ export default function TrialPage() {
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-              <Badge variant="secondary">Why VendorHub</Badge>
+              <Badge variant="secondary">Why DukaanDar</Badge>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Built for Your Success</h2>
             </div>
 
@@ -266,7 +266,7 @@ export default function TrialPage() {
                   src="/placeholder.svg?height=400&width=500"
                   width="500"
                   height="400"
-                  alt="VendorHub Features"
+                  alt="DukaanDar Features"
                   className="rounded-xl shadow-lg"
                 />
               </div>
@@ -328,9 +328,9 @@ export default function TrialPage() {
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-gray-50">
         <div className="flex items-center gap-2">
           <Store className="h-6 w-6 text-blue-600" />
-          <span className="font-bold text-gray-900">VendorHub</span>
+          <span className="font-bold text-gray-900">DukaanDar</span>
         </div>
-        <p className="text-xs text-gray-600 sm:ml-4">© 2024 VendorHub. All rights reserved.</p>
+        <p className="text-xs text-gray-600 sm:ml-4">© 2024 DukaanDar. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4 text-gray-600">
             Terms of Service

@@ -12,10 +12,21 @@ import Link from "next/link"
 export default function RegisterPage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
   const [showRegistrationForm, setShowRegistrationForm] = useState(false)
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    shop_name: '',
+    phone: '',
+    password: '',
+    confirmPassword: ''
+  })
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
 
   const plans = [
     {
       id: "basic",
+      planId: 1,
       name: "Basic",
       price: "$29",
       period: "/month",
@@ -34,6 +45,7 @@ export default function RegisterPage() {
     },
     {
       id: "professional",
+      planId: 2,
       name: "Professional",
       price: "$79",
       period: "/month",
@@ -55,6 +67,7 @@ export default function RegisterPage() {
     },
     {
       id: "enterprise",
+      planId: 3,
       name: "Enterprise",
       price: "$199",
       period: "/month",
@@ -83,6 +96,52 @@ export default function RegisterPage() {
     setShowRegistrationForm(true)
   }
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setMessage("")
+
+    const plan = plans.find((p) => p.id === selectedPlan)
+    if (!plan) return alert("Invalid plan selected")
+
+    if (form.password !== form.confirmPassword) {
+      setMessage("Passwords do not match")
+      setLoading(false)
+      return
+    }
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          planId: plan.planId
+        })
+      })
+      const data = await res.json()
+      if (data.success) {
+        alert("Check your email and verify using the link to login.")
+        window.location.href = "/login";
+        // Reset form
+        setForm({ name: '', email: '', shop_name: '', phone: '', password: '', confirmPassword: '' })
+        setShowRegistrationForm(false)
+      } else {
+        setMessage(data.error || "Something went wrong")
+      }
+    } catch (err) {
+      setMessage("Server error.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
+
   if (showRegistrationForm) {
     const plan = plans.find((p) => p.id === selectedPlan)
 
@@ -104,74 +163,69 @@ export default function RegisterPage() {
           <div className="grid gap-8 lg:grid-cols-3">
             {/* Registration Form */}
             <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Account Information</CardTitle>
-                  <CardDescription>Fill in your details to get started with your 14-day free trial</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid gap-4 sm:grid-cols-2">
+              <form onSubmit={handleSubmit}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Account Information</CardTitle>
+                    <CardDescription>Fill in your details to get started with your 14-day free trial</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" placeholder="John" required />
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input id="name" name="name" placeholder="Enter name" value={form.name} onChange={handleChange} required />
                     </div>
+
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" placeholder="Doe" required />
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input id="email" name="email" type="email" placeholder="user@example.com" value={form.email} onChange={handleChange} required />
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" type="email" placeholder="john@example.com" required />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="shop_name">Shop Name</Label>
+                      <Input id="shop_name" name="shop_name" placeholder="Your Shop" value={form.shop_name} onChange={handleChange} required />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="company">Company Name</Label>
-                    <Input id="company" placeholder="Your Company Ltd." required />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input id="phone" name="phone" type="tel" placeholder="+91 8987905633" value={form.phone} onChange={handleChange} />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Password</Label>
+                      <Input id="password" name="password" type="password" placeholder="Create a strong password" value={form.password} onChange={handleChange} required />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input id="password" type="password" placeholder="Create a strong password" required />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword">Confirm Password</Label>
+                      <Input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm your password" value={form.confirmPassword} onChange={handleChange} required />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input id="confirmPassword" type="password" placeholder="Confirm your password" required />
-                  </div>
+                    <div className="flex items-start space-x-2">
+                      <input type="checkbox" id="terms" className="mt-1" required />
+                      <Label htmlFor="terms" className="text-sm leading-5">
+                        I agree to the{" "}
+                        <Link href="#" className="text-blue-600 hover:underline">Terms of Service</Link> and{" "}
+                        <Link href="#" className="text-blue-600 hover:underline">Privacy Policy</Link>
+                      </Label>
+                    </div>
 
-                  <div className="flex items-start space-x-2">
-                    <input type="checkbox" id="terms" className="mt-1" required />
-                    <Label htmlFor="terms" className="text-sm leading-5">
-                      I agree to the{" "}
-                      <Link href="#" className="text-blue-600 hover:underline">
-                        Terms of Service
-                      </Link>{" "}
-                      and{" "}
-                      <Link href="#" className="text-blue-600 hover:underline">
-                        Privacy Policy
-                      </Link>
-                    </Label>
-                  </div>
+                    {message && (
+                      <p className="text-center text-sm text-red-500">{message}</p>
+                    )}
 
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6">Start My Free Trial</Button>
+                    <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6" disabled={loading}>
+                      {loading ? "Submitting..." : "Start My Free Trial"}
+                    </Button>
 
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">
-                      Already have an account?{" "}
-                      <Link href="/login" className="text-blue-600 hover:underline font-medium">
-                        Sign in
-                      </Link>
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="text-center">
+                      <p className="text-sm text-gray-600">
+                        Already have an account?{" "}
+                        <Link href="/login" className="text-blue-600 hover:underline font-medium">Sign in</Link>
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </form>
             </div>
 
             {/* Plan Summary */}
@@ -301,9 +355,8 @@ export default function RegisterPage() {
                   </div>
 
                   <Button
-                    className={`w-full mt-6 ${
-                      plan.popular ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-900 hover:bg-gray-800"
-                    }`}
+                    className={`w-full mt-6 ${plan.popular ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-900 hover:bg-gray-800"
+                      }`}
                     onClick={() => handlePlanSelect(plan.id)}
                   >
                     Start Free Trial
