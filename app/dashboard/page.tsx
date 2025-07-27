@@ -15,24 +15,29 @@ export default function DashboardPage() {
   const [vendorInfo, setVendorInfo] = useState<{ shop_name: string; vendor_id: string } | null>(null)
 
   useEffect(() => {
+    const vendor_id = localStorage.getItem("vendor_id")
+    if (!vendor_id) return
+
     const fetchVendorInfo = async () => {
-      const vendor_id = localStorage.getItem("vendor_id")
-      if (!vendor_id) return
+      try {
+        const res = await fetch("/api/auth/vendor/info", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ vendor_id }),
+        })
 
-      const res = await fetch("/api/vendor/info", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ vendor_id }),
-      })
-
-      const data = await res.json()
-      if (data.success && data.vendor) {
-        setVendorInfo(data.vendor)
+        const data = await res.json()
+        if (data.success && data.vendor) {
+          setVendorInfo(data.vendor)
+        }
+      } catch (error) {
+        console.error("Failed to fetch vendor info:", error)
       }
     }
 
     fetchVendorInfo()
   }, [])
+
 
   const stats = [
     {
@@ -102,10 +107,14 @@ export default function DashboardPage() {
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">
-            {vendorInfo?.shop_name || "Your Shop"}
-          </h2>
-          <p className="text-sm text-gray-600">Vendor ID: {vendorInfo?.vendor_id}</p>
+          {vendorInfo ? (
+            <>
+              <h2 className="text-2xl font-bold">{vendorInfo.shop_name}</h2>
+              <p className="text-sm text-muted-foreground">Vendor ID: {vendorInfo.vendor_id}</p>
+            </>
+          ) : (
+            <p>Loading vendor details...</p>
+          )}
         </div>
         <Button>
           <Plus className="mr-2 h-4 w-4" />

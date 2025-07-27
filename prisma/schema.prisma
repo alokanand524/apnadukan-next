@@ -19,7 +19,7 @@ model User {
   name      String
   email     String   @unique
   shop_name String
-  phone     Int
+  phone     String
   password  String
   planId    Int
   is_Active Boolean  @default(true)
